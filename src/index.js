@@ -1,4 +1,6 @@
-import DropdownMenu from "./drop-down-menu/index";
+import DropdownMenu from "./drop-down-menu";
 
-const BasicUIElements = { DropdownMenu };
-export default BasicUIElements;
+const Foo = () => {};
+const Bar = () => {};
+
+export { Foo, Bar, DropdownMenu };
