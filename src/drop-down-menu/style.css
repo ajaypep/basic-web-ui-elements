@@ -1,0 +1,46 @@
+.dropdown {
+  background-color: aliceblue;
+  text-align: center;
+  position: relative;
+  display: inline-block;
+}
+.dropdown > button {
+  padding: 0;
+  margin: 0;
+}
+
+.dropdown:hover > ul {
+  visibility: visible;
+}
+
+.dropdown > ul:hover {
+  visibility: visible;
+}
+.dropdown > ul {
+  --my-width: 100%;
+  width: var(--my-width);
+  position: absolute;
+  top: 100%;
+  left: calc(50% - (var(--my-width) / 2));
+  padding: 0;
+  margin: 0;
+  padding: 0.3em 0;
+  visibility: hidden;
+  display: flex;
+  flex-direction: column;
+  gap: 5px;
+  list-style-type: none;
+  align-items: center;
+  background-color: wheat;
+  border-radius: 5px;
+}
+
+.dropdown > ul > li {
+  cursor: pointer;
+  padding: 0.3em;
+  border-radius: 5px;
+}
+.dropdown > ul > li:hover {
+  background-color: burlywood;
+  color: beige;
+}

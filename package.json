@@ -1,0 +1,31 @@
+{
+  "name": "@ajaypep/basic-web-ui-elements",
+  "version": "0.1.0",
+  "description": "Basic web UI elements",
+  "main": "dist/main.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "build": "webpack",
+    "watch": "webpack --watch"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/ajaypep/basic-web-ui-elements.git"
+  },
+  "author": "Ajay",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/ajaypep/basic-web-ui-elements/issues"
+  },
+  "homepage": "https://github.com/ajaypep/basic-web-ui-elements#readme",
+  "devDependencies": {
+    "css-loader": "^6.10.0",
+    "eslint": "^8.57.0",
+    "eslint-config-airbnb-base": "^15.0.0",
+    "eslint-config-prettier": "^9.1.0",
+    "eslint-plugin-import": "^2.29.1",
+    "style-loader": "^3.3.4",
+    "webpack": "^5.91.0",
+    "webpack-cli": "^5.1.4"
+  }
+}
