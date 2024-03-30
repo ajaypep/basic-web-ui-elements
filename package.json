@@ -1,12 +1,12 @@
 {
   "name": "@ajaypep/basic-web-ui-elements",
-  "version": "0.1.0",
+  "version": "0.1.1",
   "description": "Basic web UI elements",
   "main": "dist/main.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1",
     "build": "webpack",
-    "watch": "webpack --watch"
+    "watch": "webpack --watch",
+    "start": "webpack serve"
   },
   "repository": {
     "type": "git",
@@ -24,8 +24,10 @@
     "eslint-config-airbnb-base": "^15.0.0",
     "eslint-config-prettier": "^9.1.0",
     "eslint-plugin-import": "^2.29.1",
+    "html-webpack-plugin": "^5.6.0",
     "style-loader": "^3.3.4",
     "webpack": "^5.91.0",
-    "webpack-cli": "^5.1.4"
+    "webpack-cli": "^5.1.4",
+    "webpack-dev-server": "^5.0.4"
   }
 }

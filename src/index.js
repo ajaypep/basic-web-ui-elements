@@ -1,6 +1,6 @@
-import DropdownMenu from "./drop-down-menu";
+import './base.css';
 
-const Foo = () => {};
-const Bar = () => {};
+import DropdownMenu from './drop-down-menu';
+import MobileMenu from './mobile-menu';
 
-export { Foo, Bar, DropdownMenu };
+export { DropdownMenu, MobileMenu };
