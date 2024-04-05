@@ -1,6 +1,6 @@
 {
   "name": "@ajaypep/basic-web-ui-elements",
-  "version": "0.1.3",
+  "version": "0.1.4",
   "description": "Basic web UI elements",
   "main": "dist/main.js",
   "scripts": {

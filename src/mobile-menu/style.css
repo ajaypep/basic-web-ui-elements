@@ -1,16 +1,32 @@
 .menu {
   width: 400px;
+  border: 1px solid rgb(236, 240, 244);
+  border-radius: 15px;
+  padding: 1em;
 }
 
 .menu > header {
+  border: none;
+  box-shadow: 0 0 3px -1px rgb(0 0 0 /0.5);
+  border-radius: 15px;
+}
+
+.profile-region {
   display: flex;
   flex-direction: column;
   align-items: center;
+  background: rgb(248, 248, 248);
+  background: linear-gradient(
+    180deg,
+    rgba(248, 248, 248, 1) 0%,
+    rgba(254, 254, 254, 1) 64%
+  );
   position: relative;
-  border: 1px solid black;
   max-width: 100%;
+  border: 0.3em solid white;
+  border-radius: 15px;
 }
-.profile {
+.profile-info {
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -18,35 +34,95 @@
   margin-bottom: 0.5em;
 }
 
-.profile > * {
+.profile-info > *,
+p {
   padding: 0;
   margin: 0;
 }
+.profile-region > .notification,
+.profile-region > .edit-profile {
+  box-shadow: 0 0 3px -1px rgb(0 0 0 /0.5);
+}
 
-.profile > .picture {
+.profile-info > .picture {
   width: 50px;
   height: 50px;
   margin-bottom: 1em;
   border-radius: 50%;
 }
 
-.profile > .email {
+.profile-info > .email {
   color: rgb(47, 79, 79);
 }
 
-.menu > header > .notification {
+.profile-region > .notification {
   position: absolute;
+  padding: 1em;
   width: 2em;
   height: 2em;
   top: 10px;
   right: 10px;
   background-image: url('./images/notification.svg');
+  background-repeat: no-repeat;
+  background-position: center;
+  background-size: 60%;
+  background-color: white;
+  border-radius: 50%;
+  border: none;
+  cursor: pointer;
 }
 
-.menu > header > .edit-profile {
-  border: 1px solid rgb(0 0 0 / 0.3);
+.profile-region > .edit-profile {
   border-radius: 8px;
   font-size: 1.025em;
   padding: 0.5em 1em;
-  box-shadow: 1px 1px 1px rgb(0 0 0 / 0.3);
+  background-color: white;
+  border: none;
+  margin-bottom: 1.2em;
+}
+
+.field {
+  display: flex;
+  flex-direction: column;
+}
+.field > label {
+  flex-basis: 100%;
+}
+.workspace {
+  border-top: 1px solid rgb(236, 240, 244);
+  padding: 1em;
+  gap: 0.5em;
+}
+
+.workspace.field > select {
+  border: 1px solid rgb(236, 240, 244);
+  background-color: white;
+  font-family: inherit;
+  font-size: inherit;
+  box-shadow: 0 0 2px -1px rgb(0 0 0 /0.5);
+  border-radius: 10px;
+  padding: 0.3em;
+}
+
+.list {
+  margin: 1em 1em 0 1em;
+}
+
+.list > .item:first-child {
+  padding-bottom: 1em;
+  border-bottom: 1px solid rgb(236, 240, 244);
+}
+.list > .item {
+  margin: 1em 0;
+  display: flex;
+  align-items: center;
+}
+
+.list > .item:last-child {
+  margin-bottom: 0;
+}
+
+.list > .item > img {
+  min-width: 1.5em;
+  margin-right: 1em;
 }
