@@ -2,7 +2,7 @@ import './style.css';
 import LeftArrowSrc from './images/left-arrow.svg';
 import RightArrowSrc from './images/right-arrow.svg';
 
-const ArrowFlankedImage = (imgSrcs, fillDotAtIndex) => {
+const ArrowFlankedImage = (imgSrcs, fillDotAtIndex, updateArrow) => {
   const component = document.createElement('div');
   component.classList.add('arrow-flanked-image');
   let currentImageIndex = 0;
@@ -19,6 +19,7 @@ const ArrowFlankedImage = (imgSrcs, fillDotAtIndex) => {
     currentImageIndex -= 1;
     img.src = imgSrcs[currentImageIndex];
     fillDotAtIndex(currentImageIndex);
+    updateArrow(currentImageIndex);
   });
 
   const rightArrowImg = document.createElement('img');
@@ -28,6 +29,7 @@ const ArrowFlankedImage = (imgSrcs, fillDotAtIndex) => {
     currentImageIndex += 1;
     img.src = imgSrcs[currentImageIndex];
     fillDotAtIndex(currentImageIndex);
+    updateArrow(currentImageIndex);
   });
   component.append(leftArrowImg, img, rightArrowImg);
   return { component, img, setCurrentImageIndex };
@@ -44,12 +46,12 @@ const Dot = (index) => {
   return { component, toggleFill };
 };
 
-const NavigationDots = (imgSrcs, changeImageSrcToIndex) => {
+const NavigationDots = (numOfDots, changeImageSrcToIndex, updateArrow) => {
   const component = document.createElement('div');
   component.classList.add('navigation-dots');
   component.classList.add('first');
   const dots = [];
-  for (let i = 0; i < imgSrcs.length; i += 1) {
+  for (let i = 0; i < numOfDots; i += 1) {
     const dot = Dot(i);
     component.appendChild(dot.component);
     dots.push(dot);
@@ -68,13 +70,7 @@ const NavigationDots = (imgSrcs, changeImageSrcToIndex) => {
     const newImageIndex = Number(event.target.dataset.index);
     fillDotAtIndex(newImageIndex);
     changeImageSrcToIndex(newImageIndex);
-    if (newImageIndex === 0) {
-      component.classList.add('first');
-      component.classList.remove('last');
-    } else if (newImageIndex === imgSrcs.length - 1) {
-      component.classList.add('last');
-      component.classList.remove('first');
-    }
+    updateArrow(newImageIndex);
   });
   const getDots = () => dots;
   return { component, getDots, fillDotAtIndex };
@@ -87,13 +83,34 @@ const ImageSlider = (imgSrcs) => {
   let arrowFlankedImage = null;
 
   const changeImageSrcToIndex = (index) => {
-    arrowFlankedImage.setCurrentImageIndex(Number(index));
+    arrowFlankedImage.setCurrentImageIndex(index);
     arrowFlankedImage.img.src = imgSrcs[index];
   };
 
-  const navigationDots = NavigationDots(imgSrcs, changeImageSrcToIndex);
+  const updateArrow = (index) => {
+    if (index === 0) {
+      imageSliderEle.classList.add('first');
+      imageSliderEle.classList.remove('last');
+    } else if (index === imgSrcs.length - 1) {
+      imageSliderEle.classList.add('last');
+      imageSliderEle.classList.remove('first');
+    } else {
+      imageSliderEle.classList.remove('first');
+      imageSliderEle.classList.remove('last');
+    }
+  };
+  updateArrow(0);
+  const navigationDots = NavigationDots(
+    imgSrcs.length,
+    changeImageSrcToIndex,
+    updateArrow
+  );
 
-  arrowFlankedImage = ArrowFlankedImage(imgSrcs, navigationDots.fillDotAtIndex);
+  arrowFlankedImage = ArrowFlankedImage(
+    imgSrcs,
+    navigationDots.fillDotAtIndex,
+    updateArrow
+  );
 
   imageSliderEle.append(arrowFlankedImage.component, navigationDots.component);
   return imageSliderEle;

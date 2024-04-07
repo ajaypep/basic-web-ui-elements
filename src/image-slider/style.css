@@ -40,11 +40,13 @@
   gap: 12px;
 }
 
-.navigation-dots.first > .arrow-flanked-image > img:first-child {
-  border: 1px solid black;
+.image-slider.first > .arrow-flanked-image > img:first-child {
+  opacity: 0.3;
+  cursor: unset;
 }
-.navigation-dots.last > .arrow-flanked-image > img:last-child {
-  border: 1px solid black;
+.image-slider.last > .arrow-flanked-image > img:last-child {
+  opacity: 0.3;
+  cursor: unset;
 }
 
 .image-slider {
