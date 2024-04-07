@@ -62,7 +62,7 @@ const NavigationDots = (imgSrcs) => {
 
   component.addEventListener('click', (event) => {
     if (!event.target.dataset.index) return;
-    currentImageIndex = event.target.dataset.index;
+    currentImageIndex = Number(event.target.dataset.index);
     fillDotAtIndex(currentImageIndex);
     currentImage.src = imgSrcs[currentImageIndex];
   });

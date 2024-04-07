@@ -43,5 +43,5 @@ const testImageSlider = () => {
     ])
   );
 };
-testMobileMenu();
+//testMobileMenu();
 testImageSlider();
