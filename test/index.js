@@ -42,6 +42,13 @@ const testImageSlider = () => {
       SampleImage3Src,
     ])
   );
+  document.body.appendChild(
+    BasicWebUIElements.ImageSlider([
+      SampleImage1Src,
+      SampleImage2Src,
+      SampleImage3Src,
+    ])
+  );
 };
 //testMobileMenu();
 testImageSlider();

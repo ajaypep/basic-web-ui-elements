@@ -2,21 +2,23 @@ import './style.css';
 import LeftArrowSrc from './images/left-arrow.svg';
 import RightArrowSrc from './images/right-arrow.svg';
 
-const currentImage = document.createElement('img');
-let currentImageIndex = 0;
-const ArrowFlankedImage = (imgSrcs, navigationDots) => {
-  const arrowFlankedImageEle = document.createElement('div');
-  arrowFlankedImageEle.classList.add('arrow-flanked-image');
-
-  currentImage.src = imgSrcs[currentImageIndex];
+const ArrowFlankedImage = (imgSrcs, fillDotAtIndex) => {
+  const component = document.createElement('div');
+  component.classList.add('arrow-flanked-image');
+  let currentImageIndex = 0;
+  const setCurrentImageIndex = (value) => {
+    currentImageIndex = value;
+  };
+  const img = document.createElement('img');
+  img.src = imgSrcs[currentImageIndex];
 
   const leftArrowImg = document.createElement('img');
   leftArrowImg.src = LeftArrowSrc;
   leftArrowImg.addEventListener('click', () => {
     if (currentImageIndex <= 0) return;
     currentImageIndex -= 1;
-    currentImage.src = imgSrcs[currentImageIndex];
-    navigationDots.fillDotAtIndex(currentImageIndex);
+    img.src = imgSrcs[currentImageIndex];
+    fillDotAtIndex(currentImageIndex);
   });
 
   const rightArrowImg = document.createElement('img');
@@ -24,12 +26,11 @@ const ArrowFlankedImage = (imgSrcs, navigationDots) => {
   rightArrowImg.addEventListener('click', () => {
     if (currentImageIndex >= imgSrcs.length - 1) return;
     currentImageIndex += 1;
-    currentImage.src = imgSrcs[currentImageIndex];
-    navigationDots.fillDotAtIndex(currentImageIndex);
+    img.src = imgSrcs[currentImageIndex];
+    fillDotAtIndex(currentImageIndex);
   });
-
-  arrowFlankedImageEle.append(leftArrowImg, currentImage, rightArrowImg);
-  return arrowFlankedImageEle;
+  component.append(leftArrowImg, img, rightArrowImg);
+  return { component, img, setCurrentImageIndex };
 };
 
 const Dot = (index) => {
@@ -43,9 +44,10 @@ const Dot = (index) => {
   return { component, toggleFill };
 };
 
-const NavigationDots = (imgSrcs) => {
+const NavigationDots = (imgSrcs, changeImageSrcToIndex) => {
   const component = document.createElement('div');
   component.classList.add('navigation-dots');
+  component.classList.add('first');
   const dots = [];
   for (let i = 0; i < imgSrcs.length; i += 1) {
     const dot = Dot(i);
@@ -54,6 +56,7 @@ const NavigationDots = (imgSrcs) => {
   }
   let lastFilledDotIndex = 0;
   dots[lastFilledDotIndex].toggleFill();
+
   const fillDotAtIndex = (index) => {
     dots[lastFilledDotIndex].toggleFill();
     lastFilledDotIndex = index;
@@ -62,9 +65,16 @@ const NavigationDots = (imgSrcs) => {
 
   component.addEventListener('click', (event) => {
     if (!event.target.dataset.index) return;
-    currentImageIndex = Number(event.target.dataset.index);
-    fillDotAtIndex(currentImageIndex);
-    currentImage.src = imgSrcs[currentImageIndex];
+    const newImageIndex = Number(event.target.dataset.index);
+    fillDotAtIndex(newImageIndex);
+    changeImageSrcToIndex(newImageIndex);
+    if (newImageIndex === 0) {
+      component.classList.add('first');
+      component.classList.remove('last');
+    } else if (newImageIndex === imgSrcs.length - 1) {
+      component.classList.add('last');
+      component.classList.remove('first');
+    }
   });
   const getDots = () => dots;
   return { component, getDots, fillDotAtIndex };
@@ -74,11 +84,18 @@ const ImageSlider = (imgSrcs) => {
   const imageSliderEle = document.createElement('div');
   imageSliderEle.classList.add('image-slider');
 
-  const navigationDots = NavigationDots(imgSrcs);
-  imageSliderEle.append(
-    ArrowFlankedImage(imgSrcs, navigationDots),
-    navigationDots.component
-  );
+  let arrowFlankedImage = null;
+
+  const changeImageSrcToIndex = (index) => {
+    arrowFlankedImage.setCurrentImageIndex(Number(index));
+    arrowFlankedImage.img.src = imgSrcs[index];
+  };
+
+  const navigationDots = NavigationDots(imgSrcs, changeImageSrcToIndex);
+
+  arrowFlankedImage = ArrowFlankedImage(imgSrcs, navigationDots.fillDotAtIndex);
+
+  imageSliderEle.append(arrowFlankedImage.component, navigationDots.component);
   return imageSliderEle;
 };
 
