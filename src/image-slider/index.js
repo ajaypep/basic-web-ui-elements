@@ -6,6 +6,8 @@ const ArrowFlankedImage = (imgSrcs, fillDotAtIndex, updateArrow) => {
   const component = document.createElement('div');
   component.classList.add('arrow-flanked-image');
   let currentImageIndex = 0;
+
+  const getCurrentImageIndex = () => currentImageIndex;
   const setCurrentImageIndex = (value) => {
     currentImageIndex = value;
   };
@@ -32,7 +34,7 @@ const ArrowFlankedImage = (imgSrcs, fillDotAtIndex, updateArrow) => {
     updateArrow(currentImageIndex);
   });
   component.append(leftArrowImg, img, rightArrowImg);
-  return { component, img, setCurrentImageIndex };
+  return { component, img, setCurrentImageIndex, getCurrentImageIndex };
 };
 
 const Dot = (index) => {
@@ -107,6 +109,7 @@ const ImageSlider = (imgSrcs) => {
     }
   };
   updateArrow(0);
+
   const navigationDots = NavigationDots(
     imgSrcs.length,
     changeImageSrcToIndex,
@@ -118,7 +121,23 @@ const ImageSlider = (imgSrcs) => {
     navigationDots.fillDotAtIndex,
     updateArrow
   );
+  const changeToImageAndUpdateUI = (index) => {
+    changeImageSrcToIndex(index);
+    updateArrow(index);
+    navigationDots.fillDotAtIndex(index);
+  };
+  const loopImageAfterInterval = (seconds) => {
+    setInterval(() => {
+      let index = arrowFlankedImage.getCurrentImageIndex();
+      index += 1;
+      if (index === imgSrcs.length) {
+        index = 0;
+      }
+      changeToImageAndUpdateUI(index);
+    }, seconds);
+  };
 
+  loopImageAfterInterval(5000);
   imageSliderEle.append(arrowFlankedImage.component, navigationDots.component);
   return imageSliderEle;
 };
