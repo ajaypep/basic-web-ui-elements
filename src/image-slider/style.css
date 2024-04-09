@@ -1,19 +1,21 @@
 .arrow-flanked-image {
-  display: grid;
-  grid-template-columns: 25px 100px 25px;
+  width: 100%;
+  height: 100%;
+  display: inline-grid;
+  grid-template-columns: 1fr 15fr 1fr;
+  justify-content: center;
   justify-items: center;
   align-items: center;
-  gap: 10px;
+  gap: 15px;
 }
 .arrow-flanked-image > img:first-child,
 .arrow-flanked-image > img:last-child {
-  height: 50px;
   cursor: pointer;
 }
 
 .arrow-flanked-image > img:nth-child(2) {
-  width: 100px;
-  height: 100px;
+  max-width: 100%;
+  height: 100%;
   border-radius: 15px;
 }
 
@@ -40,17 +42,17 @@
   gap: 12px;
 }
 
-.image-slider.first > .arrow-flanked-image > img:first-child {
-  opacity: 0.3;
-  cursor: unset;
-}
+.image-slider.first > .arrow-flanked-image > img:first-child,
 .image-slider.last > .arrow-flanked-image > img:last-child {
   opacity: 0.3;
   cursor: unset;
 }
 
 .image-slider {
-  display: inline-flex;
+  width: 80vw;
+  height: 65vh;
+  margin: 0 auto;
+  display: flex;
   flex-direction: column;
   align-items: center;
   gap: 15px;

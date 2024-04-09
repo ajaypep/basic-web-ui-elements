@@ -77,6 +77,13 @@ const NavigationDots = (numOfDots, changeImageSrcToIndex, updateArrow) => {
 };
 
 const ImageSlider = (imgSrcs) => {
+  if (
+    imgSrcs === undefined ||
+    !Array.isArray(imgSrcs) ||
+    imgSrcs.length === 0
+  ) {
+    throw Error('Invalid image sources');
+  }
   const imageSliderEle = document.createElement('div');
   imageSliderEle.classList.add('image-slider');
 
