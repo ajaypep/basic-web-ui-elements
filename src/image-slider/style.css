@@ -1,10 +1,9 @@
 .image-window {
   display: flex;
   gap: 10px;
-}
-.image-window.shift-left {
   transition: transform 2s 0s;
 }
+
 .image-window > img {
   min-width: 100%;
   height: 400px;

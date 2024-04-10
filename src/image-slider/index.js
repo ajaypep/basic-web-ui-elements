@@ -17,12 +17,12 @@ const ImageWindow = (imgSrcs) => {
 
   let currentImageIndex = 0;
   const getCurrentImageIndex = () => currentImageIndex;
+  const getMaxImageIndex = () => imgSrcs.length - 1;
   const setCurrentImageIndex = (value) => {
     currentImageIndex = value;
   };
 
   const changeImageTo = (index) => {
-    // const shift = currentImageIndex - index;
     setCurrentImageIndex(index);
     imageWindow.style.transform = `translate(${-1010 * index}px, 0)`;
     imageWindow.classList.add('shift-left');
@@ -35,6 +35,7 @@ const ImageWindow = (imgSrcs) => {
     getComponent,
     changeImageTo,
     getCurrentImageIndex,
+    getMaxImageIndex,
   };
 };
 
@@ -45,9 +46,10 @@ const ArrowFlankedImage = (imageWindow, fillDotAtIndex, updateArrow) => {
   const leftArrowImg = document.createElement('img');
   leftArrowImg.src = LeftArrowSrc;
   leftArrowImg.addEventListener('click', () => {
-    const currentImageIndex = imageWindow.getCurrentImageIndex();
+    let currentImageIndex = imageWindow.getCurrentImageIndex();
     if (currentImageIndex <= 0) return;
     imageWindow.changeImageTo(currentImageIndex - 1);
+    currentImageIndex = imageWindow.getCurrentImageIndex();
     fillDotAtIndex(currentImageIndex);
     updateArrow(currentImageIndex);
   });
@@ -55,9 +57,10 @@ const ArrowFlankedImage = (imageWindow, fillDotAtIndex, updateArrow) => {
   const rightArrowImg = document.createElement('img');
   rightArrowImg.src = RightArrowSrc;
   rightArrowImg.addEventListener('click', () => {
-    const currentImageIndex = imageWindow.getCurrentImageIndex();
-    if (currentImageIndex <= 0) return;
+    let currentImageIndex = imageWindow.getCurrentImageIndex();
+    if (currentImageIndex >= imageWindow.getMaxImageIndex()) return;
     imageWindow.changeImageTo(currentImageIndex + 1);
+    currentImageIndex = imageWindow.getCurrentImageIndex();
     fillDotAtIndex(currentImageIndex);
     updateArrow(currentImageIndex);
   });
