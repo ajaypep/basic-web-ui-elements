@@ -25,10 +25,6 @@ const ImageWindow = (imgSrcs) => {
   const changeImageTo = (index) => {
     setCurrentImageIndex(index);
     imageWindow.style.transform = `translate(${-1010 * index}px, 0)`;
-    imageWindow.classList.add('shift-left');
-    setTimeout(() => {
-      imageWindow.classList.remove('shift-left');
-    }, 2000);
   };
 
   return {
@@ -150,23 +146,25 @@ const ImageSlider = (imgSrcs) => {
     navigationDots.fillDotAtIndex,
     updateArrow
   );
-  // const changeToImageAndUpdateUI = (index) => {
-  //   imageWindow.changeImageTo(index);
-  //   updateArrow(index);
-  //   navigationDots.fillDotAtIndex(index);
-  // };
-  // const loopImageAfterInterval = (seconds) => {
-  //   setInterval(() => {
-  //     let index = arrowFlankedImage.getCurrentImageIndex();
-  //     index += 1;
-  //     if (index === imgSrcs.length) {
-  //       index = 0;
-  //     }
-  //     changeToImageAndUpdateUI(index);
-  //   }, seconds);
-  // };
 
-  // loopImageAfterInterval(5000);
+  const changeToImageAndUpdateUI = (index) => {
+    imageWindow.changeImageTo(index);
+    updateArrow(index);
+    navigationDots.fillDotAtIndex(index);
+  };
+
+  const changeImageAfterInterval = (seconds) => {
+    setInterval(() => {
+      let index = imageWindow.getCurrentImageIndex();
+      index += 1;
+      if (index === imgSrcs.length) {
+        index = 0;
+      }
+      changeToImageAndUpdateUI(index);
+    }, seconds);
+  };
+
+  changeImageAfterInterval(5000);
   imageSliderEle.append(arrowFlankedImage.component, navigationDots.component);
   return imageSliderEle;
 };
