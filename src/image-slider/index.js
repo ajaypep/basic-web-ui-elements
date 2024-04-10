@@ -2,24 +2,52 @@ import './style.css';
 import LeftArrowSrc from './images/left-arrow.svg';
 import RightArrowSrc from './images/right-arrow.svg';
 
-const ArrowFlankedImage = (imgSrcs, fillDotAtIndex, updateArrow) => {
+const ImageWindow = (imgSrcs) => {
+  const imageWindow = document.createElement('div');
+  imageWindow.classList.add('image-window');
+  for (let i = 0; i < imgSrcs.length; i += 1) {
+    const img = document.createElement('img');
+    img.src = imgSrcs[i];
+    imageWindow.appendChild(img);
+  }
   const component = document.createElement('div');
-  component.classList.add('arrow-flanked-image');
-  let currentImageIndex = 0;
+  component.classList.add('image-window-wrapper');
+  component.appendChild(imageWindow);
+  const getComponent = () => component;
 
+  let currentImageIndex = 0;
   const getCurrentImageIndex = () => currentImageIndex;
   const setCurrentImageIndex = (value) => {
     currentImageIndex = value;
   };
-  const img = document.createElement('img');
-  img.src = imgSrcs[currentImageIndex];
+
+  const changeImageTo = (index) => {
+    // const shift = currentImageIndex - index;
+    setCurrentImageIndex(index);
+    imageWindow.style.transform = `translate(${-1010 * index}px, 0)`;
+    imageWindow.classList.add('shift-left');
+    setTimeout(() => {
+      imageWindow.classList.remove('shift-left');
+    }, 2000);
+  };
+
+  return {
+    getComponent,
+    changeImageTo,
+    getCurrentImageIndex,
+  };
+};
+
+const ArrowFlankedImage = (imageWindow, fillDotAtIndex, updateArrow) => {
+  const component = document.createElement('div');
+  component.classList.add('arrow-flanked-image');
 
   const leftArrowImg = document.createElement('img');
   leftArrowImg.src = LeftArrowSrc;
   leftArrowImg.addEventListener('click', () => {
+    const currentImageIndex = imageWindow.getCurrentImageIndex();
     if (currentImageIndex <= 0) return;
-    currentImageIndex -= 1;
-    img.src = imgSrcs[currentImageIndex];
+    imageWindow.changeImageTo(currentImageIndex - 1);
     fillDotAtIndex(currentImageIndex);
     updateArrow(currentImageIndex);
   });
@@ -27,14 +55,14 @@ const ArrowFlankedImage = (imgSrcs, fillDotAtIndex, updateArrow) => {
   const rightArrowImg = document.createElement('img');
   rightArrowImg.src = RightArrowSrc;
   rightArrowImg.addEventListener('click', () => {
-    if (currentImageIndex >= imgSrcs.length - 1) return;
-    currentImageIndex += 1;
-    img.src = imgSrcs[currentImageIndex];
+    const currentImageIndex = imageWindow.getCurrentImageIndex();
+    if (currentImageIndex <= 0) return;
+    imageWindow.changeImageTo(currentImageIndex + 1);
     fillDotAtIndex(currentImageIndex);
     updateArrow(currentImageIndex);
   });
-  component.append(leftArrowImg, img, rightArrowImg);
-  return { component, img, setCurrentImageIndex, getCurrentImageIndex };
+  component.append(leftArrowImg, imageWindow.getComponent(), rightArrowImg);
+  return { component };
 };
 
 const Dot = (index) => {
@@ -48,7 +76,7 @@ const Dot = (index) => {
   return { component, toggleFill };
 };
 
-const NavigationDots = (numOfDots, changeImageSrcToIndex, updateArrow) => {
+const NavigationDots = (numOfDots, changeImageTo, updateArrow) => {
   const component = document.createElement('div');
   component.classList.add('navigation-dots');
   component.classList.add('first');
@@ -71,7 +99,7 @@ const NavigationDots = (numOfDots, changeImageSrcToIndex, updateArrow) => {
     if (!event.target.dataset.index) return;
     const newImageIndex = Number(event.target.dataset.index);
     fillDotAtIndex(newImageIndex);
-    changeImageSrcToIndex(newImageIndex);
+    changeImageTo(newImageIndex);
     updateArrow(newImageIndex);
   });
   const getDots = () => dots;
@@ -86,15 +114,13 @@ const ImageSlider = (imgSrcs) => {
   ) {
     throw Error('Invalid image sources');
   }
+
   const imageSliderEle = document.createElement('div');
   imageSliderEle.classList.add('image-slider');
 
-  let arrowFlankedImage = null;
+  const imageWindow = ImageWindow(imgSrcs);
 
-  const changeImageSrcToIndex = (index) => {
-    arrowFlankedImage.setCurrentImageIndex(index);
-    arrowFlankedImage.img.src = imgSrcs[index];
-  };
+  let arrowFlankedImage = null;
 
   const updateArrow = (index) => {
     if (index === 0) {
@@ -112,32 +138,32 @@ const ImageSlider = (imgSrcs) => {
 
   const navigationDots = NavigationDots(
     imgSrcs.length,
-    changeImageSrcToIndex,
+    imageWindow.changeImageTo,
     updateArrow
   );
 
   arrowFlankedImage = ArrowFlankedImage(
-    imgSrcs,
+    imageWindow,
     navigationDots.fillDotAtIndex,
     updateArrow
   );
-  const changeToImageAndUpdateUI = (index) => {
-    changeImageSrcToIndex(index);
-    updateArrow(index);
-    navigationDots.fillDotAtIndex(index);
-  };
-  const loopImageAfterInterval = (seconds) => {
-    setInterval(() => {
-      let index = arrowFlankedImage.getCurrentImageIndex();
-      index += 1;
-      if (index === imgSrcs.length) {
-        index = 0;
-      }
-      changeToImageAndUpdateUI(index);
-    }, seconds);
-  };
+  // const changeToImageAndUpdateUI = (index) => {
+  //   imageWindow.changeImageTo(index);
+  //   updateArrow(index);
+  //   navigationDots.fillDotAtIndex(index);
+  // };
+  // const loopImageAfterInterval = (seconds) => {
+  //   setInterval(() => {
+  //     let index = arrowFlankedImage.getCurrentImageIndex();
+  //     index += 1;
+  //     if (index === imgSrcs.length) {
+  //       index = 0;
+  //     }
+  //     changeToImageAndUpdateUI(index);
+  //   }, seconds);
+  // };
 
-  loopImageAfterInterval(5000);
+  // loopImageAfterInterval(5000);
   imageSliderEle.append(arrowFlankedImage.component, navigationDots.component);
   return imageSliderEle;
 };
